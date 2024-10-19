@@ -3,4 +3,3 @@ pandas
 matplotlib
 scikit-learn
 streamlit
-pickle

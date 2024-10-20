@@ -1,34 +1,35 @@
-import joblib
 import streamlit as st
-import numpy as np
+import pickle
 from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 import os
 
-# Dosya yolunu tanımlayın
-file_path = os.path.join(os.getcwd(), "mnist_veri_seti.joblib")
+# Başlık
+st.title("Rakam Tanıma Uygulaması")
 
-# Modeli yükleyin
-if os.path.exists(file_path):
-    loaded_model = joblib.load(file_path)
-    st.write("Model başarıyla yüklendi.")
-else:
-    st.write(f"Hata: {file_path} dosyası bulunamadı.")
-    st.stop()  # Dosya bulunamazsa uygulamayı durdurun
+# Dosya yolunu belirle
+model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
 
-st.title("Rakam Tahmin Etme Uygulaması")
+# Modeli yükle
+with open(model_path, 'rb') as file:
+    loaded_model = pickle.load(file)
 
-# Resim yükleme
-uploaded_file = st.file_uploader("Bir resim yükleyin", type=["png", "jpg", "jpeg"])
+# Kullanıcıdan resim yüklemesi iste
+uploaded_file = st.file_uploader("Lütfen bir resim dosyası yükleyin", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
+    # Resmi göster
     img = Image.open(uploaded_file)
-    img = img.resize((28, 28))  # Resmi 28x28 boyutuna yeniden boyutlandır
-    img = img.convert("L")  # Grayscale (siyah-beyaz) formata çevir
-    img_array = np.array(img).reshape(1, -1)  # Resmi düzleştir
+    st.image(img, caption='Yüklenen Resim', use_column_width=True)
+
+    # Resmi işleme
+    img = img.resize((28, 28))
+    img = img.convert("L")
+    img_array = np.array(img).reshape(1, -1)
 
     # Tahmin yap
-    prediction = loaded_model.predict(img_array)
-
-    # Sonucu göster
-    st.write(f"Tahmin Edilen Sınıf: {prediction[0]}")
-    st.image(img, caption=f"Tahmin Edilen Sınıf: {prediction[0]}")
+    pred = loaded_model.predict(img_array)
+    st.write(f"Tahmin edilen rakam: {pred[0]}")
+else:
+    st.write("Lütfen bir resim yükleyin.")

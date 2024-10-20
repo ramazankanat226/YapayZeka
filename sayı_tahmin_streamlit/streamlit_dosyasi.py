@@ -9,7 +9,7 @@ import os
 st.title("Rakam Tanıma Uygulaması")
 
 # Dosya yolunu belirle
-model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
+model_path = os.path.join(os.path.dirname(__file__), 'mnist_veri_seti.joblib')
 
 # Modeli yükle
 with open(model_path, 'rb') as file:

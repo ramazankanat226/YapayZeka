@@ -3,7 +3,6 @@ import pickle
 import pandas as pd
 import os
 
-
 # Başlık
 st.title("Göğüs Kanseri Teşhis Uygulaması")
 
@@ -12,10 +11,10 @@ scaler_path = os.path.join(os.path.dirname(__file__), 'scaler1.pkl')
 model_path = os.path.join(os.path.dirname(__file__), 'lr1.pkl')
 
 # Model ve scaler dosyalarını yükle
-with open("scaler1.pkl", "rb") as file:
+with open(scaler_path, "rb") as file:
     loaded_scaler = pickle.load(file)
 
-with open("lr1.pkl", "rb") as file:
+with open(model_path, "rb") as file:
     loaded_model = pickle.load(file)
 
 # Kullanıcıdan manuel olarak özellik değerlerini al

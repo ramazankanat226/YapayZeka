@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 # Dinamik olarak modelin dosya yolunu belirleyin
-model_path = os.path.join(os.path.dirname(__file__), 'logistic_regression_mnist_model.pkl')
+model_path = os.path.join(os.path.dirname(__file__), 'mnist_veri_seti.joblib')
 
 # Modeli tekrar yükleme
 lr_loaded = joblib.load(model_path)

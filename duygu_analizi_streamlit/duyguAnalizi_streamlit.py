@@ -8,17 +8,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 import streamlit as st
-
+import os
 
 warnings.filterwarnings("ignore")
 
+csv_path = os.path.join(os.path.dirname(__file__), 'magaza_yorumlari_duygu_analizi.csv')
+turkceSW_path = os.path.join(os.path.dirname(__file__), 'turkce_stopwords.txt')
 
-data = pd.read_csv("magaza_yorumlari_duygu_analizi.csv", encoding="utf-16")
+data = pd.read_csv(csv_path, encoding="utf-16")
 data = data.dropna()
 data["Durum"] = data.loc[:, "Durum"].map({"Olumlu": 0, "Tarafsız": 1, "Olumsuz": 2})
 
 
-with open("turkce_stopwords.txt", "r", encoding="utf-8") as file:
+with open(turkceSW_path, "r", encoding="utf-8") as file:
     stop_words = set(file.read().split())
 
 def harfdegistir(cumle):

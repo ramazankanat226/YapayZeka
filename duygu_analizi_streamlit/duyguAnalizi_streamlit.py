@@ -12,8 +12,9 @@ import streamlit as st
 
 warnings.filterwarnings("ignore")
 
+url = 'https://raw.githubusercontent.com/ramazankanat226/YapayZeka/refs/heads/main/duygu_analizi_streamlit/magaza_yorumlari_duygu_analizi.csv'
 
-data = pd.read_csv("magaza_yorumlari_duygu_analizi.csv", encoding="utf-16")
+data = pd.read_csv(url, encoding="utf-16")
 data = data.dropna()
 data["Durum"] = data.loc[:, "Durum"].map({"Olumlu": 0, "Tarafsız": 1, "Olumsuz": 2})
 

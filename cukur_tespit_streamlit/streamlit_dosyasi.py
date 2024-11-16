@@ -3,6 +3,12 @@ import cv2
 import tempfile
 import os
 from ultralytics import YOLO
+import gdown
+
+# Google Drive'dan dosya indirme
+url = 'https://drive.google.com/uc?export=download&id=1v0cN_V6_zviDbxxHh3UH-AtGcycO8DXq'
+output = 'best.pt'  # İndirilen dosya ismi
+gdown.download(url, output, quiet=False)
 
 # Modeli yükle
 model = YOLO("best.pt")  # Model dosyasının yolu

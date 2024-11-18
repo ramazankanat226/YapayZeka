@@ -4,6 +4,7 @@ import tempfile
 import os
 import numpy as np
 from ultralytics import YOLO
+import gdown
 
 # Google Drive'dan dosya indirme
 url = 'https://drive.google.com/uc?export=download&id=1v0cN_V6_zviDbxxHh3UH-AtGcycO8DXq'

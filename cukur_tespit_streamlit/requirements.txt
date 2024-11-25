@@ -2,3 +2,4 @@ streamlit
 opencv-python
 ultralytics
 gdown
+pyopengl

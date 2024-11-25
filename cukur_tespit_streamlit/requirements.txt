@@ -1,4 +1,4 @@
 streamlit
+opencv-python
 ultralytics
 gdown
-opencv-python-headless

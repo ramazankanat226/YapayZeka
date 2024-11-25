@@ -2,3 +2,4 @@ streamlit
 opencv-python-headless
 ultralytics
 gdown
+torch==1.12.1

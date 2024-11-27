@@ -6,7 +6,7 @@ from ultralytics import YOLO
 import gdown
 
 # Google Drive'dan dosya indirme
-url = 'https://drive.google.com/file/d/1_9Qm0Al1RjhNrtcNuJMAU0O4q1NEurb5/view?usp=drive_link'
+url = 'https://drive.google.com/uc?id=1_9Qm0Al1RjhNrtcNuJMAU0O4q1NEurb5' 
 output = 'mantar_best.pt'  # İndirilen dosya ismi
 gdown.download(url, output, quiet=False)
 

@@ -3,10 +3,16 @@ import cv2
 import tempfile
 import os
 from ultralytics import YOLO
+import gdown
+
+# Google Drive'dan dosya indirme
+url = 'https://drive.google.com/file/d/1_9Qm0Al1RjhNrtcNuJMAU0O4q1NEurb5/view?usp=drive_link'
+output = 'mantar_best.pt'  # İndirilen dosya ismi
+gdown.download(url, output, quiet=False)
 
 # Modeli yükle
-model = YOLO("best.pt")  # Model dosyasının yolu
-st.title("Kuzu Göbeği Algılama Uygulaması")
+model = YOLO("mantar_best.pt")  # Model dosyasının yolu
+st.title("Kuzu Göbeği Mantarı Algılama Uygulaması")
 
 # Seçenekler (menü)
 option = st.selectbox("Bir seçenek seçin", ["Fotoğraf Yükle", "Video Yükle", "Kamera ile Canlı Video Çekimi ve Tespit"])
@@ -38,6 +44,7 @@ if option == "Fotoğraf Yükle":
             temp_file.write(uploaded_image.read())
             image_path = temp_file.name
 
+        
         image = cv2.imread(image_path)
 
         # Modeli kullanarak tahmin yap
@@ -47,10 +54,9 @@ if option == "Fotoğraf Yükle":
         # Bounding box çizimi
         for detection in detections:
             x1, y1, x2, y2, confidence, class_id = detection
-            if confidence >= 0.6:  # Doğruluk oranı %60 ve üzeriyse
-                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-                cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Kırmızı kutu
-                cv2.putText(image, f"{confidence:.2f}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Kırmızı kutu
+            cv2.putText(image, f"{confidence:.2f}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
         # İşlenmiş görüntüyü gösterme
         st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption="İşlenmiş Fotoğraf")
@@ -63,7 +69,6 @@ if option == "Fotoğraf Yükle":
             file_name="islenmis_resim.jpg",
             mime="image/jpeg"
         )
-
 
 # Video Yükle
 elif option == "Video Yükle":
@@ -79,7 +84,7 @@ elif option == "Video Yükle":
         cap = cv2.VideoCapture(video_path)
 
         # Çıktı videosunu kaydetmek için (geçici dosya)
-        output_video_path = os.path.join(tempfile.gettempdir(), "işlenmiş_video.mp4")
+        output_video_path = os.path.join(tempfile.gettempdir(), "output_video.mp4")
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec seçimi
         fps = int(cap.get(cv2.CAP_PROP_FPS))
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -117,7 +122,7 @@ elif option == "Video Yükle":
 
         # Kullanıcıya video indirme linki sağlama
         with open(output_video_path, "rb") as video_file:
-            st.download_button(label="İndir", data=video_file, file_name="işlenmiş_video.mp4", mime="video/mp4")
+            st.download_button(label="İndir", data=video_file, file_name="islenmis_video.mp4", mime="video/mp4")
 
 # Kamera ile Canlı Video Çekimi ve Tespit
 elif option == "Kamera ile Canlı Video Çekimi ve Tespit":

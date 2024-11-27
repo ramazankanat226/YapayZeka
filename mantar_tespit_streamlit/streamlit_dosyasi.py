@@ -35,7 +35,6 @@ def save_uploaded_file(uploaded_file, suffix):
         temp_file.write(uploaded_file.read())
         return temp_file.name
 
-# Fotoğraf Yükle
 if option == "Fotoğraf Yükle":
     uploaded_image = st.file_uploader("Fotoğraf yükleyin", type=["jpg", "jpeg", "png"])
     if uploaded_image is not None:
@@ -44,7 +43,6 @@ if option == "Fotoğraf Yükle":
             temp_file.write(uploaded_image.read())
             image_path = temp_file.name
 
-        
         image = cv2.imread(image_path)
 
         # Modeli kullanarak tahmin yap
@@ -54,9 +52,10 @@ if option == "Fotoğraf Yükle":
         # Bounding box çizimi
         for detection in detections:
             x1, y1, x2, y2, confidence, class_id = detection
-            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-            cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Kırmızı kutu
-            cv2.putText(image, f"{confidence:.2f}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            if confidence >= 0.6:  # Doğruluk oranı %60 ve üzeriyse
+                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+                cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Kırmızı kutu
+                cv2.putText(image, f"{confidence:.2f}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
         # İşlenmiş görüntüyü gösterme
         st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption="İşlenmiş Fotoğraf")
